@@ -35,7 +35,7 @@ Rule: {rule}
 
 Clause: {clause}
 
-"""
+Answer: """
 
 QNA_TEMPLATE_dict_no_error = """ Given the following knowledge base as context and the legal rule, examine the following clause with \
 and explain why is it flagged as the wrong institution appears in the clause.\
@@ -46,7 +46,7 @@ Context: {context}
 
 Clause: {clause}
 
-"""
+Answer: """
 
 
 
@@ -86,7 +86,7 @@ class PDF_base:
                 
         return context
     
-    def genAI_dict_error_response(self, rule, clause, error):
+    def genAI_dict_error_response(self,clause,rule, error):
         
         context = self.chunks_pdf_clause(clause)
         
@@ -113,12 +113,13 @@ class PDF_base:
 
         output if there is no issue with the given clause: ```No issue found```
 
-        output if there is an issue with the given clause: \
-            [{{
-                "Critical Issue": "The clause is ambiguous",
-                "Context and legal implications": "The clause does not clearly define the terms of the agreement",
-                "Suggestion": "The clause should e rewritten to clearly define the terms of the agreement"
-            }}]
+        output if there is an issue with the given clause:
+        
+        [{{
+            "Critical Issue": "The clause is ambiguous",
+            "Context and legal implications": "The clause does not clearly define the terms of the agreement",
+            "Suggestion": "The clause should e rewritten to clearly define the terms of the agreement"
+        }}]
             
         """
         
@@ -128,6 +129,8 @@ class PDF_base:
         response = get_completion(messages)
         
         reply = response.choices[0].message.content
+        
+        print(reply)
         
         reply = ast.literal_eval(reply)
         

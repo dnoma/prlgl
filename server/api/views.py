@@ -11,11 +11,10 @@ import os
 
 @csrf_exempt
 @require_http_methods(["POST"])
-
 def reply_dict_error_api(request):
     
     pdf_directory_path = os.path.dirname(os.path.abspath(__file__))
-    pdf_filename = 'Sample.pdf'
+    pdf_filename = 'Knowledge_base.PDF'
 
     pdf_file_path = os.path.join(pdf_directory_path, pdf_filename)
     if not os.path.exists(pdf_file_path):
@@ -32,6 +31,7 @@ def reply_dict_error_api(request):
     
     rule = data['rule']
     
+    # Use the method to get the rusult in the form of a json file
     result = pdf_bot.genAI_dict_error_response(clause, rule, error)
         
     if result:
@@ -50,7 +50,7 @@ def reply_dict_error_api(request):
 def reply_dict_no_error_api(request):
     
     pdf_directory_path = os.path.dirname(os.path.abspath(__file__))
-    pdf_filename = 'Sample.pdf'
+    pdf_filename = 'Knowledge_base.PDF'
 
     pdf_file_path = os.path.join(pdf_directory_path, pdf_filename)
     if not os.path.exists(pdf_file_path):
