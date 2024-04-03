@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [errorHighlights, setErrorHighlights] = useState([]);
   const [institutionFound, setInstitutionFound] = useState(false);
   const analyseClause = () => {
+    setTotalErrors(0)
     const found = errorPhrases.reduce((acc, { category, phrases }) => {
       const foundInCategory = phrases.filter((phrase) => input.includes(phrase));
       if (foundInCategory.length > 0) {
@@ -50,7 +51,7 @@ const Dashboard = () => {
         <UserInput {...{input, setInput, errorHighlights}}/>
       </div>
       <div className="w-1/4 fixed right-0 top-0 h-full">
-        <Sidebar {...{foundErrors, analyseClause, totalErrors, firstCheck, setFirstCheck, institutionFound}}/>
+        <Sidebar {...{foundErrors, analyseClause, totalErrors, firstCheck, setFirstCheck, institutionFound, input}}/>
       </div>
     </main>
   );

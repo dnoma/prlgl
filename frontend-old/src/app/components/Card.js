@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 const Card = ({
     isError,
     header,
-    highlight
+    highlight, //this is the error phrase,
+    input //clause
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const color = isError ? "bg-red-600" : "bg-green-600"
@@ -14,8 +15,8 @@ const Card = ({
         "Optional Arbitration": "Uncertainty may arise in arbitration clauses which use the term 'may’ instead of 'shall'. This suggests that the parties are not obliged to arbitrate.",
         "Non-arbitrable matters": "For the subject matter to be arbitrable, it must be a matter contemplated within the arbitration clause. The precise nature of the matter sought to be arbitrated must be determined, and its arbitrability is to be ascertained upon a true construction of the arbitration clause.",
         "Unknown Institution": "This'body/institution' is either fictional or is not known for arbitration"
-
     }
+
 
     const [explanation, setExplanation] = useState("")
 

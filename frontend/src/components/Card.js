@@ -3,13 +3,19 @@ import { useEffect, useState } from "react";
 const Card = ({
     isError,
     header,
-    highlight
+    highlight, //error,
+    input //clause from user
+
 }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [explanation, setExplanation] = useState("")
     const color = isError ? "bg-red-600" : "bg-green-600"
     useEffect(() => {
         // API-ROUTE
         //Fetch explanation for dict-error from GPT and update explanation state
+
+        //FOR DICT-ERROR EXPLANATION (TOP BRANCH)
+        //Call api to ask gpt to explain with the following request body: clause (from input), error (from highlight), rule (from rule[header])
     },[])
 
 
