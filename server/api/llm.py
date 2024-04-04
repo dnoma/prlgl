@@ -5,12 +5,21 @@ from openai import OpenAI
 
 # CHECK: Read OpenAI API key from an environment variable
 # Load the environment variables from .env file
+
+o = os.path.dirname(os.path.abspath(__file__))
+
+os.chdir(o)
+
 load_dotenv()
+
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 if not OPENAI_API_KEY:
-    raise ValueError("No OpenAI API key found in environment variables")
+    
+    # raise ValueError("No OpenAI API key found in environment variables", os.getcwd())
+    
+    OPENAI_API_KEY = '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'
 
 # Init
 DEFAULT_MODEL = 'gpt-3.5-turbo'
