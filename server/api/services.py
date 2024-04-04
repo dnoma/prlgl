@@ -2,7 +2,7 @@ import os
 from PyPDF2 import PdfReader
 import re
 import json
-from .llm import get_completion
+from llm import get_completion
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -37,7 +37,7 @@ Answer: """
 
 QNA_TEMPLATE_dict_no_error = """ Given the following knowledge base as context and the legal rule, examine the following clause with \
 and explain why is it flagged as the wrong institution appears in the clause.\
-Do not refer to external source.:
+Do not refer to an external source.:
 
 Context: {context}
 
@@ -86,39 +86,44 @@ class PDF_base:
     
     def genAI_dict_error_response(self,clause,rule, error):
         
+        # here is where the knowledge base is
         context = self.chunks_pdf_clause(clause)
         
         updated_input  = QNA_TEMPLATE_dict_error.format(context=context, rule=rule, clause=clause, error=error)
         
         sys_message = f"""
-        You are a legal assistant here to help the user with contract reviewing to explain the error \
-        behind the clauses.
 
-        When given an example of a contractual clause which gives rise to potential critical legal issues, you are to \
-        conduct the following, using your uploaded knowledge and in simple and concise English:
+            As a legal assistant specialized in contract analysis, your role is to assist users in identifying and addressing potential legal issues within contractual clauses. Leveraging a comprehensive knowledge base of legal documents, precedents, and principles, you are expected to:
 
-        Your answer should follow the interview answer format, consisting of complete sentences that directly address the question
+            1. Analyze and interpret contractual clauses to identify any critical legal issues.
+            2. Provide a clear, integrated analysis of the context and the potential legal implications arising from these issues.
+            3. Offer concrete, actionable suggestions for amending or clarifying the clause to mitigate legal risks.
 
-        1. Highlight these critical issues.
-        2. Contextualise and explain its legal implications.
-        3. Make relevant suggestions for change.
+            Your responses should be concise, precise, and tailored to non-specialist users, ensuring they are accessible and actionable. 
 
-        If there is no issue with the given clause, reflect that there is no issue as 'No issue found'.
+            In instances where a clause is adequately structured and presents no legal concerns, it is important to affirm the clause's validity with a simple 'No issue found.'
 
-        Example:
-
-        user: ```clause....```
-
-        output if there is no issue with the given clause: ```No issue found```
-
-        output if there is an issue with the given clause:
-        
-        [{{
-            "Critical Issue": "The clause is ambiguous",
-            "Context and legal implications": "The clause does not clearly define the terms of the agreement",
-            "Suggestion": "The clause should e rewritten to clearly define the terms of the agreement"
-        }}]
+            For clauses with identified issues, your response should format as follows:
             
+            {{
+                "Context and Legal Implications": "A detailed explanation combining the specific legal issue detected with its potential consequences or risks, providing a comprehensive understanding of the matter at hand.",
+                "Suggestion": "Specific advice on how to amend the clause to address the identified issue effectively."
+            }}
+
+            This approach ensures users receive both the insight needed to understand the context and potential legal ramifications, along with the guidance necessary to rectify any concerns effectively.
+            Example:
+
+            user: ```clause....```
+
+            output if there is no issue with the given clause: ```No issue found```
+
+            output if there is an issue with the given clause:
+            
+            [{{
+                "Context and legal implications": "The clause does not clearly define the terms of the agreement",
+                "Suggestion": "The clause should be rewritten to clearly define the terms of the agreement"
+            }}]
+
         """
         
         messages = [{"role": "system", "content": sys_message},
@@ -141,33 +146,37 @@ class PDF_base:
         updated_input  = QNA_TEMPLATE_dict_no_error.format(context=context, clause=clause)
         
         sys_message = f"""
-        You are a legal assistant here to help the user with contract reviewing to explain the error \
-        behind the clauses.
+            As a legal assistant specialized in contract analysis, your role is to assist users in identifying and addressing potential legal issues within contractual clauses. Leveraging a comprehensive knowledge base of legal documents, precedents, and principles, you are expected to:
 
-        When given an example of a contractual clause which gives rise to potential critical legal issues, you are to \
-        conduct the following, using your uploaded knowledge and in simple and concise English:
+            1. Analyze and interpret contractual clauses to identify any critical legal issues.
+            2. Provide a clear, integrated analysis of the context and the potential legal implications arising from these issues.
+            3. Offer concrete, actionable suggestions for amending or clarifying the clause to mitigate legal risks.
 
-        Your answer should follow the interview answer format, consisting of complete sentences that directly address the question
+            Your responses should be concise, precise, and tailored to non-specialist users, ensuring they are accessible and actionable. 
 
-        1. Highlight these critical issues.
-        2. Contextualise and explain its legal implications.
-        3. Make relevant suggestions for change.
+            In instances where a clause is adequately structured and presents no legal concerns, it is important to affirm the clause's validity with a simple 'No issue found.'
 
-        If there is no issue with the given clause, reflect that there is no issue as 'No issue found'.
-
-        Example:
-
-        user: ```clause....```
-
-        output if there is no issue with the given clause: ```No issue found```
-
-        output if there is an issue with the given clause: \
-            [{{
-                "Critical Issue": "The clause is ambiguous",
-                "Context and legal implications": "The clause does not clearly define the terms of the agreement",
-                "Suggestion": "The clause should e rewritten to clearly define the terms of the agreement"
-            }}]
+            For clauses with identified issues, your response should format as follows:
             
+            {{
+                "Context and Legal Implications": "A detailed explanation combining the specific legal issue detected with its potential consequences or risks, providing a comprehensive understanding of the matter at hand.",
+                "Suggestion": "Specific advice on how to amend the clause to address the identified issue effectively."
+            }}
+
+            This approach ensures users receive both the insight needed to understand the context and potential legal ramifications, along with the guidance necessary to rectify any concerns effectively.
+            Example:
+
+            user: ```clause....```
+
+            output if there is no issue with the given clause: ```No issue found```
+
+            output if there is an issue with the given clause:
+            
+            [{{
+                "Context and legal implications": "The clause does not clearly define the terms of the agreement",
+                "Suggestion": "The clause should be rewritten to clearly define the terms of the agreement"
+            }}]
+
         """
         
         
@@ -177,13 +186,21 @@ class PDF_base:
         response = get_completion(messages)
         
         reply = response.choices[0].message.content
+
+        print(reply)
         
-        reply = ast.literal_eval(reply)
+        # Error handling
+        try:
+            reply = ast.literal_eval(reply)
+
+        except ValueError as e:
+            print(f"Error evaluating reply: {e}")
+
         
         return reply
         
         
-# Name entity Recognition
+# Named entity Recognition
 def extract_institution(clause):
     sys_message = f"""
     You are a legal assistant here to help the user with contract reviewing who is an expert in \
@@ -212,8 +229,14 @@ def extract_institution(clause):
     reply = response.choices[0].message.content
     
     print(reply)
+
+    # Error handling
+    try:
+        reply = ast.literal_eval(reply)
+
+    except ValueError as e:
+        print(f"Error evaluating reply: {e}")
     
-    reply = ast.literal_eval(reply)
     
     for name in reply:
         if not name.split()[0].istitle():

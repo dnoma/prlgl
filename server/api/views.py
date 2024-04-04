@@ -11,6 +11,7 @@ import os
 
 @csrf_exempt
 @require_http_methods(["POST"])
+
 def reply_dict_error_api(request):
     
     pdf_directory_path = os.path.dirname(os.path.abspath(__file__))
@@ -90,6 +91,7 @@ def finding_fictional_institution(request):
 
 @csrf_exempt
 @require_http_methods(["POST"])
+
 def chatbot_api(request):
     try:
         data = json.loads(request.body)

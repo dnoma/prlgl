@@ -1,10 +1,18 @@
 import os
+from dotenv import load_dotenv
 from typing import Any, Dict, Iterable, List, Optional
-
 from openai import OpenAI
 
-OPENAI_API_KEY = "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"
+# CHECK: Read OpenAI API key from an environment variable
+# Load the environment variables from .env file
+load_dotenv()
 
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+if not OPENAI_API_KEY:
+    raise ValueError("No OpenAI API key found in environment variables")
+
+# Init
 DEFAULT_MODEL = 'gpt-3.5-turbo'
 DEFAULT_MAX_TOKENS = 1200
 DEFAULT_TEMPERATURE = 0.0
