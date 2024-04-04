@@ -2,9 +2,7 @@ import os
 from PyPDF2 import PdfReader
 import re
 import json
-import docx
-import llm
-from llm import get_completion
+from .llm import get_completion
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
