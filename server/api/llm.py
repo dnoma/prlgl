@@ -22,7 +22,7 @@ if not OPENAI_API_KEY:
     OPENAI_API_KEY = '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'
 
 # Init
-DEFAULT_MODEL = 'gpt-3.5-turbo'
+DEFAULT_MODEL = 'gpt-4-turbo-preview'
 DEFAULT_MAX_TOKENS = 1200
 DEFAULT_TEMPERATURE = 0.0
 DEFAULT_TOP_P = 1.0

@@ -168,7 +168,8 @@ class PDF_base:
 
             user: ```clause....```
 
-            output if there is no issue with the given clause: ```No issue found```
+            output if there is no issue with the given clause: 
+            ["No issue found"]
 
             output if there is an issue with the given clause:
             
@@ -216,9 +217,13 @@ def extract_institution(clause):
     
     user: ```clause....```
     
-    output if there are legal institutions in the clause: ```["institution_1", "institution_2", "institution_3"]```
+    output if there are legal institutions in the clause:
     
-    output if there are no legal institutions in the clause: ```["No legal institutions found"]```
+    ["institution_1", "institution_2", "institution_3"]
+    
+    output if there are no legal institutions in the clause:
+    
+    ["No legal institutions found"]
     
     """        
     
