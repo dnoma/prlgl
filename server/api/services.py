@@ -206,11 +206,11 @@ def extract_institution(clause):
     You are a legal assistant here to help the user with contract reviewing who is an expert in \
     natural language processing and especially name entity recognition for legal institutions.
     
-    Your primary task entails identifying and extracting all legal-related institutions from the provided clause. \
+    Your task is to identify the institutions specified in the following clause.
+        
+    If there is no legal institutions are found within the clause, please respond with 'No legal institutions found'.
     
-    These institutions should adhere to the following criteria: they should not correspond to the name of a country.
-    
-    In the event that no legal institutions meeting the specified criteria are found within the clause, please respond with 'No legal institutions found'.
+    Your responses should be in the list of institutions.
     
     Example:
     
@@ -237,14 +237,16 @@ def extract_institution(clause):
     except ValueError as e:
         print(f"Error evaluating reply: {e}")
     
-    
+    reply_new = []
     for name in reply:
-        if not name.split()[0].istitle():
-            reply.remove(name)
-    if len(reply) == 0:
-        reply = ["No legal institutions found"]
+        for n in name.split():
+            if n.istitle():
+                reply_new.append(name)
+                break
+    if len(reply_new) == 0:
+        reply_new = ["No legal institutions found"]
     
-    return reply
+    return reply_new
         
         
         
