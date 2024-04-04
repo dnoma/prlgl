@@ -9,7 +9,7 @@ const institutions = [
     "Australian Disputes Centre",
     "Chartered Institute of Arbitrators Australia",
     "International Chamber of Commerce Australia (ICC Australia)",
-    "Resolution Institute",
+    "Resolution Institute", 
     "Austrian Arbitration Association (Arb|Aut)",
     "Vienna International Arbitral Centre (VIAC)",
     "Bahrain Chamber for Dispute Resolution",
