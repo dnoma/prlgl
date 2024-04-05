@@ -1,4 +1,4 @@
-import logo from "../assets/logo.png"
+import logo from "../assets/prlgl-logo.png"
 import Card from './Card';
 const Sidebar = ({
     foundErrors,
