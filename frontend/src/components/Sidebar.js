@@ -15,7 +15,7 @@ const Sidebar = ({
                 <img src={logo} width={75} height={75} alt=""/>
                 <div>
                     <h2 className="font-bold text-lg">Suggested Reviews ({totalErrors})</h2>
-                    <button onClick={() => analyseClause()} className=" bg-indigo-400 rounded-md shadow py-2 hover:bg-indigo-300 text-xs font-semibold my-2 px-8">Review Clause</button>
+                    <button onClick={() => analyseClause()} className=" bg-indigo-400 rounded-md shadow py-2 hover:bg-indigo-600 text-xs text-white font-semibold my-2 px-8">Review Clause</button>
                 </div>
             </div>
 
