@@ -8,12 +8,14 @@ const Card = ({
 
 }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [explanation, setExplanation] = useState("")
+    const [explanation, setExplanation] = useState("Loading...")
+    const [suggestion, setSuggestion] = useState("Loading...")
     const color = isError ? "bg-red-600" : "bg-green-600"
-    
+    const [explanationGenerated, setExplanationGenerated] = useState(false)
+
     useEffect(() => {
-        if (isError) {
-            // Only proceed with the API call if there is an error
+        if (isError && !explanationGenerated) {
+            // Only proceed with the API call if there is an error and explanation has not been generated
             const apiUrl = 'http://127.0.0.1:8000/dict-error/';
             const requestBody = {
                 clause: input,
@@ -33,7 +35,11 @@ const Card = ({
 
                     if (!response.ok) throw new Error('Network response was not ok');
                     const data = await response.json();
-                    setExplanation(data.reply);
+                    //Context and Legal Implications
+                    console.log(data.reply[0]["Context and Legal Implications"])
+                    setExplanation(data.reply[0]["Context and Legal Implications"])
+                    setSuggestion(data.reply[0]["Suggestion"])
+                    setExplanationGenerated(true)
                 } catch (error) {
                     console.error('Failed to fetch explanation:', error);
                     setExplanation('Failed to fetch explanation.');
@@ -52,7 +58,13 @@ const Card = ({
                 <h4 className="font-semibold text-sm">{header}</h4>
                 {(!isOpen || header === "Unknown Institution") ? (<p className="text-sm italic">{highlight}</p>
                 ) : (
-                <p className="text-sm italic">{explanation}</p>)}
+                    <>
+                        <p className="text-sm italic">{explanation}</p>
+                        <h4 className="font-semibold text-sm mt-4">Suggestion</h4>
+                        <p className="text-sm italic">{suggestion}</p>
+                        </>
+
+                )}
             </div>
 
         </button>
