@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import UserInput from "../components/UserInput"
 import institutions from '../institutions.js';
@@ -7,7 +7,7 @@ const Dashboard = () => {
   const [input, setInput] = useState("")
   const [errorPhrases, setErrorPhrases] = useState([
     { category: 'Non-Binding Arbitration', phrases: ["only persuasive", "will be persuasive", "not binding", "non-binding"] },
-    { category: 'Alternative Dispute Resolution', phrases: ["either arbitration", "either litigation", "either by arbitration", "either by litigation", "or by litigation", "or by arbitration", "or litigation", "or arbitration", "or in the courts of", "either in the courts of"] },
+    { category: 'Alternative Dispute Resolution', phrases: ["either arbitration", "either litigation", "either by arbitration", "either by litigation", " or by litigation", " or by arbitration", " or litigation", " or arbitration", " or in the courts of", "either in the courts of"] },
     { category: 'Optional Arbitration', phrases: ["may refer to arbitration", "may submit to arbitration", "may arbitrate", "may proceed to arbitrate", "may proceed to arbitration"]},
     { category: 'Non-arbitrable matters', phrases: ["citizenship", "legitimacy of marriage", "insolvency"] },
   ])
@@ -16,11 +16,9 @@ const Dashboard = () => {
   const [totalErrors, setTotalErrors] = useState(0);
   const [firstCheck, setFirstCheck] = useState(false); // if first check is false, i.e. no initial analysis is made, sidebar will be empty (no cards)
   const [errorHighlights, setErrorHighlights] = useState([]);
-  const [institutionFound, setInstitutionFound] = useState(false);
-
+  const [institutionFound, setInstitutionFound] = useState(null);
 
   const analyseClause = () => {
-    setTotalErrors(0)
     const found = errorPhrases.reduce((acc, { category, phrases }) => {
       const foundInCategory = phrases.filter((phrase) => input.includes(phrase));
       if (foundInCategory.length > 0) {
@@ -41,13 +39,17 @@ const Dashboard = () => {
 
     const institutionFound = institutions.some((institution) => input.includes(institution));
     setInstitutionFound(institutionFound);
-    if (!institutionFound) {
-        setTotalErrors(totalErrors+1);
-    }
     console.log(institutionFound);
+
 
   }
 
+ 
+  useEffect(() => {
+    if (firstCheck) {
+      setTotalErrors((institutionFound === true) ? foundErrors.length : foundErrors.length + 1);
+    }
+  }, [foundErrors, institutionFound, firstCheck]);
   
   return (
     <main className="h-screen v-screen m-0 overflow-auto">
@@ -55,7 +57,7 @@ const Dashboard = () => {
         <UserInput {...{input, setInput, errorHighlights}}/>
       </div>
       <div className="w-1/3 fixed right-0 top-0 h-full">
-        <Sidebar {...{foundErrors, analyseClause, totalErrors, firstCheck, setFirstCheck, institutionFound, input}}/>
+        <Sidebar {...{foundErrors, analyseClause, totalErrors, firstCheck, setFirstCheck, institutionFound, input, setTotalErrors}}/>
       </div>
     </main>
   );

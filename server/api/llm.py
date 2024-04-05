@@ -19,7 +19,7 @@ if not OPENAI_API_KEY:
     
     # raise ValueError("No OpenAI API key found in environment variables", os.getcwd())
     
-    OPENAI_API_KEY = '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'
+    OPENAI_API_KEY = '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'
 
 # Init
 DEFAULT_MODEL = 'gpt-4-turbo-preview'
