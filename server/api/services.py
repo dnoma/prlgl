@@ -17,10 +17,6 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores.faiss import FAISS
 
-# Disable tokenizers parallelism to avoid deadlocks
-os.environ["TOKENIZERS_PARALLELISM"]="false"
-
-
 FAISS_INDEX_DIR = "./data/faiss_index"
 CHUNK_SIZE = 512
 CHUNK_OVERLAP = 128
@@ -142,6 +138,8 @@ class PDF_base:
         
         return reply
         
+
+    # NOT IN USE
     def genAI_dict_no_error_response(self, clause):
         
         context = self.chunks_pdf_clause(clause)

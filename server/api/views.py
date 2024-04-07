@@ -41,7 +41,15 @@ def reply_dict_error_api(request):
         return JsonResponse({"error": f"Failed to process PDF file {pdf_filename}."}, status=500)
         
     
-
+# @csrf_exempt
+# @require_http_methods(["POST"])
+# def reply_dict_error_api(request):
+#     # Hardcoded response for testing
+#     result = [{
+#         "Context and Legal Implications": "This is a test implication.",
+#         "Suggestion": "This is a test suggestion."
+#     }]
+#     return JsonResponse({'reply': result}, safe=False)
 
 
 
@@ -49,6 +57,7 @@ def reply_dict_error_api(request):
 @require_http_methods(["POST"])
 
 def reply_dict_no_error_api(request):
+    
     
     pdf_directory_path = os.path.dirname(os.path.abspath(__file__))
     pdf_filename = 'Knowledge_base.PDF'
