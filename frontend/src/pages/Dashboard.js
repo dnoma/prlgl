@@ -17,12 +17,18 @@ const Dashboard = () => {
   const [firstCheck, setFirstCheck] = useState(false); // if first check is false, i.e. no initial analysis is made, sidebar will be empty (no cards)
   const [errorHighlights, setErrorHighlights] = useState([]);
   const [institutionFound, setInstitutionFound] = useState(null);
+  const generateUniqueId = () => Date.now() + Math.random();
+
 
   const analyseClause = () => {
+    setFoundErrors([]);
+    setTotalErrors(0);
+    setErrorHighlights([]);
+    setInstitutionFound(null);
     const found = errorPhrases.reduce((acc, { category, phrases }) => {
       const foundInCategory = phrases.filter((phrase) => input.includes(phrase));
       if (foundInCategory.length > 0) {
-        acc.push({ category, phrases: foundInCategory });
+        acc.push({ category, phrases: foundInCategory, id: generateUniqueId() });
       }
       return acc;
     }, []);
@@ -40,8 +46,6 @@ const Dashboard = () => {
     const institutionFound = institutions.some((institution) => input.includes(institution));
     setInstitutionFound(institutionFound);
     console.log(institutionFound);
-
-
   }
 
  
@@ -51,13 +55,14 @@ const Dashboard = () => {
     }
   }, [foundErrors, institutionFound, firstCheck]);
   
+  
   return (
     <main className="h-screen v-screen m-0 overflow-auto">
       <div className="w-2/3">
         <UserInput {...{input, setInput, errorHighlights}}/>
       </div>
       <div className="w-1/3 fixed right-0 top-0 h-full">
-        <Sidebar {...{foundErrors, analyseClause, totalErrors, firstCheck, setFirstCheck, institutionFound, input, setTotalErrors}}/>
+        <Sidebar {...{foundErrors, setFoundErrors, analyseClause, totalErrors, firstCheck, setFirstCheck, institutionFound, input, setTotalErrors}}/>
       </div>
     </main>
   );

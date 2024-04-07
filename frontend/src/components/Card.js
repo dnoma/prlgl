@@ -12,7 +12,10 @@ const Card = ({
     const [suggestion, setSuggestion] = useState("Loading...")
     const color = isError ? "bg-red-600" : "bg-green-600"
     const [explanationGenerated, setExplanationGenerated] = useState(false)
-
+    useEffect(() => {
+        setIsOpen(false)
+        setExplanation("Loading...")
+    }, [])
     useEffect(() => {
         if (isError && !explanationGenerated) {
             // Only proceed with the API call if there is an error and explanation has not been generated
@@ -49,7 +52,7 @@ const Card = ({
             fetchExplanation();
         }
     }, [isError, header, highlight, input]);
-
+    
 
     return (
         <button onClick={() => setIsOpen(!isOpen)} className={"w-full shadow-md my-4 cursor-pointer text-left"}>

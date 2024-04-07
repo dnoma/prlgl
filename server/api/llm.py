@@ -10,17 +10,12 @@ o = os.path.dirname(os.path.abspath(__file__))
 
 os.chdir(o)
 
-load_dotenv()
-
-
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 if not OPENAI_API_KEY:
     
-    # raise ValueError("No OpenAI API key found in environment variables", os.getcwd())
+    raise ValueError("No OpenAI API key found in environment variables", os.getcwd())
     
-    OPENAI_API_KEY = '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'
-
 # Init
 DEFAULT_MODEL = 'gpt-4-turbo-preview'
 DEFAULT_MAX_TOKENS = 1200

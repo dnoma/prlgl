@@ -8,7 +8,9 @@ const Sidebar = ({
     firstCheck,
     setFirstCheck,
     institutionFound,
-    input
+    setFoundErrors,
+    input,
+    
 }) => {
     return (
         <div className="overflow-auto flex flex-col items-center w-full h-screen border-box bg-white shadow-[rgba(0,0,15,0.1)_-4px_0_4px_0px] px-8 py-6">
@@ -18,7 +20,7 @@ const Sidebar = ({
                     <h2 className="font-bold text-lg">Suggested Reviews ({totalErrors})</h2>
                     <button onClick={() => {
                         setTotalErrors(0);
-
+                        setFoundErrors([]);
                         analyseClause();
 
 
@@ -31,9 +33,9 @@ const Sidebar = ({
                     <>
                         {foundErrors.length > 0 ? (
                             foundErrors.map((foundItem, index) => (
-                                <div className="w-full" key={index}>
+                                <div className="w-full" key={foundItem.id}>
                                     {foundItem.phrases.map((phrase, index) => (
-                                        <Card isError={true} header={foundItem.category} highlight={phrase} key={index} {...{ input }} />
+                                        <Card isError={true} header={foundItem.category} highlight={phrase} key={`${foundItem.id}-${index}`} {...{ input }} />
                                     ))}
                                 </div>
                             ))

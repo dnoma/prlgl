@@ -12,20 +12,33 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
-#This is my openai key for now
-os.environ['OPENAI_API_KEY'] = '' # Add your key here please
+# Disable tokenizers parallelism to avoid deadlocks
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+# Path to directgory of settings.py (i.e., server)
+SERVER_DIR = Path(__file__).resolve().parent
+
+# Path to .env file, located in main server dir.
+dotenv_path = SERVER_DIR / '.env'
+
+load_dotenv(dotenv_path=dotenv_path)
+
+#This is OpenAI's API Key
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+if not OPENAI_API_KEY:
+    raise ValueError("No OpenAI API key found in env. variables", os.getcwd())
+
+# This is Django secret key
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--+-lh7i0sz^^ucwmq8&%dypxc*(6-)brqua*u_u^wf^wa&9g^x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
