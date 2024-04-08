@@ -40,7 +40,7 @@ const Sidebar = ({
                         ) : <></>
                         }
                         {
-                            (!institutionFound) ? <Card isError={true} header="Unknown Institution" highlight="This 'body/institution' is either fictional or is not known for arbitration" {...{ input }} /> : <></>
+                            (!institutionFound) ? <Card isError={true} header="Unknown Institution" highlight="The arbitration body or institution overseeing the proceedings is either: (i) not clearly stated, (ii) fictional, or (iii) not known for arbitration. Please review and confirm what is agreed between the parties." {...{ input }} /> : <></>
                         }
                     </>
                 }
