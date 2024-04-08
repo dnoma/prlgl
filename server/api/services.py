@@ -132,74 +132,15 @@ class PDF_base:
         
         reply = response.choices[0].message.content
         
-        print(reply)
-        
-        reply = ast.literal_eval(reply)
-        
-        return reply
-        
-
-    # NOT IN USE
-    def genAI_dict_no_error_response(self, clause):
-        
-        context = self.chunks_pdf_clause(clause)
-        
-        updated_input  = QNA_TEMPLATE_dict_no_error.format(context=context, clause=clause)
-        
-        sys_message = f"""
-            As a legal assistant specialized in contract analysis, your role is to assist users in identifying and addressing potential legal issues within contractual clauses. Leveraging a comprehensive knowledge base of legal documents, precedents, and principles, you are expected to:
-
-            1. Analyze and interpret contractual clauses to identify any critical legal issues.
-            2. Provide a clear, integrated analysis of the context and the potential legal implications arising from these issues.
-            3. Offer concrete, actionable suggestions for amending or clarifying the clause to mitigate legal risks.
-
-            Your responses should be concise, precise, and tailored to non-specialist users, ensuring they are accessible and actionable. 
-
-            In instances where a clause is adequately structured and presents no legal concerns, it is important to affirm the clause's validity with a simple 'No issue found.'
-
-            For clauses with identified issues, your response should format as follows:
-            
-            {{
-                "Context and Legal Implications": "A detailed explanation combining the specific legal issue detected with its potential consequences or risks, providing a comprehensive understanding of the matter at hand.",
-                "Suggestion": "Specific advice on how to amend the clause to address the identified issue effectively."
-            }}
-
-            This approach ensures users receive both the insight needed to understand the context and potential legal ramifications, along with the guidance necessary to rectify any concerns effectively.
-            Example:
-
-            user: ```clause....```
-
-            output if there is no issue with the given clause: 
-            ["No issue found"]
-
-            output if there is an issue with the given clause:
-            
-            [{{
-                "Context and legal implications": "The clause does not clearly define the terms of the agreement",
-                "Suggestion": "The clause should be rewritten to clearly define the terms of the agreement"
-            }}]
-
-        """
-        
-        
-        messages = [{"role": "system", "content": sys_message},
-                {"role": "user", "content": updated_input}]
-        
-        response = get_completion(messages)
-        
-        reply = response.choices[0].message.content
-
-        print(reply)
-        
-        # Error handling
         try:
-            reply = ast.literal_eval(reply)
+            # Assuming 'reply' is the variable holding the string to be evaluated
+            result = ast.literal_eval(reply)
 
-        except ValueError as e:
-            print(f"Error evaluating reply: {e}")
-
+        except SyntaxError:
+            # Handle the error: log it, return a meaningful error message, etc.
+            print("Received a string that is not a valid Python literal.")
         
-        return reply
+        return result
         
         
 # Named entity Recognition

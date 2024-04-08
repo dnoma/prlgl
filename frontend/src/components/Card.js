@@ -55,7 +55,10 @@ const Card = ({
     
 
     return (
-        <button onClick={() => setIsOpen(!isOpen)} className={"w-full shadow-md my-4 cursor-pointer text-left"}>
+        <button 
+            onClick={() => setIsOpen(!isOpen)} 
+            className={"w-full shadow-md my-4 cursor-pointer text-left"}
+            >
             <div className={"h-2 w-full " + color}></div>
             <div className="p-3 box-border border-2 border-t-transparent">
                 <h4 className="font-semibold text-sm">{header}</h4>

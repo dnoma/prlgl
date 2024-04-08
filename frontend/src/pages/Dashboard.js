@@ -58,10 +58,10 @@ const Dashboard = () => {
   
   return (
     <main className="h-screen v-screen m-0 overflow-auto">
-      <div className="w-2/3">
+      <div className="w-1/2">
         <UserInput {...{input, setInput, errorHighlights}}/>
       </div>
-      <div className="w-1/3 fixed right-0 top-0 h-full">
+      <div className="w-1/2 fixed right-0 top-0 h-full">
         <Sidebar {...{foundErrors, setFoundErrors, analyseClause, totalErrors, firstCheck, setFirstCheck, institutionFound, input, setTotalErrors}}/>
       </div>
     </main>
